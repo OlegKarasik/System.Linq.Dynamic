@@ -37,4 +37,31 @@ namespace System.Linq.Dynamic
             return _customTypes;
         }
     }
+
+    /// <summary>
+    /// The types <see cref="IDynamicLinkCustomTypeProvider"/>.
+    /// </summary>
+    public class TypesDynamicLinqCustomTypeProvider : IDynamicLinkCustomTypeProvider
+    {
+        HashSet<Type> _customTypes;
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="TypesDynamicLinqCustomTypeProvider"/> with optional array
+        /// of types.
+        /// </summary>
+        /// <param name="customTypes">An array of custom types.</param>
+        public TypesDynamicLinqCustomTypeProvider(
+            params Type[] customTypes)
+        {
+            _customTypes = new HashSet<Type>(customTypes);
+        }
+
+        /// <summary>
+        /// Returns a list of custom types that Dynamic Linq will understand.
+        /// </summary>
+        public HashSet<Type> GetCustomTypes()
+        {
+            return _customTypes;
+        }
+    }
 }
