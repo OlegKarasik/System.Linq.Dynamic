@@ -43,15 +43,9 @@ namespace System.Linq.Dynamic.Tests
             var userInfoes = qry.Select<UserInfo>("UserInfo(UserName)");
 
             //Assert
-#if NET35
-            CollectionAssert.AreEqual(
-                testList.Select(u => new UserInfo(u.UserName)).ToArray(),
-                userInfoes.ToArray());
-#else
             CollectionAssert.AreEqual(
                 testList.Select(u => new UserInfo(u.UserName)).ToArray(), 
                 userInfoes.ToArray());
-#endif
         }
     }
 }
