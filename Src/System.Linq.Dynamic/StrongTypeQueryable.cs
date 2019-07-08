@@ -42,7 +42,7 @@ namespace System.Linq.Dynamic
             }
 
             IDynamicLinkCustomTypeProvider provider = new TypesDynamicLinqCustomTypeProvider(typeof(T));
-            LambdaExpression lambda = DynamicExpression.ParseLambda(provider, source.ElementType, null, selector, args);
+            LambdaExpression lambda = DynamicExpression.ParseLambda(provider, source.ElementType, typeof(T), selector, args);
             return source.Provider.CreateQuery<T>(
                 Expression.Call(
                     typeof(Queryable), "Select",
