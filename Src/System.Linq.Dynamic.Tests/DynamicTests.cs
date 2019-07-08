@@ -1,13 +1,12 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
-using System.Linq.Dynamic;
 using System.Linq.Dynamic.Tests.Helpers;
 using System.Collections;
 using System.Collections.Generic;
 
 namespace System.Linq.Dynamic.Tests
 {
+
     [TestClass]
     public class DynamicTests
     {

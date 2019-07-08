@@ -15,6 +15,10 @@
     <DefineConstants>TRACE;NETCORE</DefineConstants>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;NETCORE</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="..\System.Linq.Dynamic.Tests\BasicTests.cs" Link="BasicTests.cs" />
     <Compile Include="..\System.Linq.Dynamic.Tests\ComplexTests.cs" Link="ComplexTests.cs" />
@@ -27,6 +31,7 @@
     <Compile Include="..\System.Linq.Dynamic.Tests\Helpers\SampleModels.cs" Link="Helpers\SampleModels.cs" />
     <Compile Include="..\System.Linq.Dynamic.Tests\InternalTests.cs" Link="InternalTests.cs" />
     <Compile Include="..\System.Linq.Dynamic.Tests\OperatorTests.cs" Link="OperatorTests.cs" />
+    <Compile Include="..\System.Linq.Dynamic.Tests\StrongTypeTests.cs" Link="StrongTypeTests.cs" />
   </ItemGroup>
 
   <ItemGroup>
