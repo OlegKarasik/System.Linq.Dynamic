@@ -269,6 +269,7 @@ namespace System.Linq.Dynamic
 
         static Dictionary<string, object> _keywords;
 
+        Dictionary<string, object> _types;
         Dictionary<string, object> _symbols;
         IDictionary<string, object> _externals;
         Dictionary<Expression, string> _literals;
@@ -282,16 +283,28 @@ namespace System.Linq.Dynamic
         Token _token;
 
         public ExpressionParser(ParameterExpression[] parameters, string expression, object[] values)
+            : this(null, parameters, expression, values)
+        {
+        }
+
+        public ExpressionParser(IDynamicLinkCustomTypeProvider provider, ParameterExpression[] parameters, string expression, object[] values)
         {
             if (_keywords == null) _keywords = CreateKeywords();
+            _types = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
             _symbols = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
             _literals = new Dictionary<Expression, string>();
+            if (provider != null) ProcessProvider(provider);
             if (parameters != null) ProcessParameters(parameters);
             if (values != null) ProcessValues(values);
             _text = expression;
             _textLen = _text.Length;
             SetTextPos(0);
             NextToken();
+        }
+
+        void ProcessProvider(IDynamicLinkCustomTypeProvider provider)
+        {
+            foreach (var type in provider.GetCustomTypes()) _types.Add(type.Name, type);
         }
 
         void ProcessParameters(ParameterExpression[] parameters)
@@ -331,6 +344,12 @@ namespace System.Linq.Dynamic
             if (_symbols.ContainsKey(name))
                 throw ParseError(Res.DuplicateIdentifier, name);
             _symbols.Add(name, value);
+        }
+
+        private bool TryFindIdentifier(out object value)
+        {
+            return _types.TryGetValue(_token.text, out value) ||
+                _keywords.TryGetValue(_token.text, out value);
         }
 
         public Expression Parse(Type resultType)
@@ -891,7 +910,7 @@ namespace System.Linq.Dynamic
         {
             ValidateToken(TokenId.Identifier);
             object value;
-            if (_keywords.TryGetValue(_token.text, out value))
+            if (TryFindIdentifier(out value))
             {
                 var typeValue = value as Type;
                 if (typeValue != null) return ParseTypeAccess(typeValue);

@@ -111,7 +111,7 @@ namespace System.Linq.Dynamic
 
 #endregion
 
-#region SelectMany
+        #region SelectMany
 
         /// <summary>
         /// Projects each element of a sequence to an <see cref="IQueryable"/> and combines the 
@@ -220,7 +220,7 @@ namespace System.Linq.Dynamic
 
 #endregion
 
-#region OrderBy
+        #region OrderBy
 
         /// <summary>
         /// Sorts the elements of a sequence in ascending or descending order according to a key.
@@ -287,7 +287,7 @@ namespace System.Linq.Dynamic
 
 #endregion
 
-#region GroupBy
+        #region GroupBy
 
         /// <summary>
         /// Groups the elements of a sequence according to a specified key string function 
@@ -416,7 +416,7 @@ namespace System.Linq.Dynamic
 
 #endregion
 
-#region GroupByMany
+        #region GroupByMany
 
         /// <summary>
         /// Groups the elements of a sequence according to multiple specified key string functions 
@@ -478,7 +478,7 @@ namespace System.Linq.Dynamic
 
 #endregion
 
-#region Join
+        #region Join
 
         /// <summary>
         /// Correlates the elements of two sequences based on matching keys.
@@ -564,7 +564,7 @@ namespace System.Linq.Dynamic
 
 #endregion
 
-#region Union
+        #region Union
 
         /// <summary>
         /// Produces the set union of sequences.
