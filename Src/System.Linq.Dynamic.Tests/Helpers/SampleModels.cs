@@ -78,6 +78,30 @@ namespace System.Linq.Dynamic.Tests.Helpers
         public int? Age { get; set; }
     }
 
+    public class UserInfo
+    {
+        public UserInfo(string userName)
+        {
+            UserName = userName ?? string.Empty;
+        }
+
+        public string UserName { get; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is UserInfo ui)
+            {
+                return this.UserName == ui.UserName;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return UserName.GetHashCode();
+        }
+    }
+
     public class Role
     {
         public static readonly Role[] StandardRoles = new Role[] {

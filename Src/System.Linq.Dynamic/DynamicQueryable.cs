@@ -75,6 +75,55 @@ namespace System.Linq.Dynamic
         #region Select
 
         /// <summary>
+        /// Projects each element of a sequence into known type.
+        /// </summary>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
+        /// <param name="source">A sequence of values to project.</param>
+        /// <param name="selector">A constructor invocation expression.</param>
+        /// <param name="args">An object array that contains zero or more objects to insert into the predicate as parameters.  Similar to the way String.Format formats strings.</param>
+        /// <returns>An <see cref="IQueryable{T}"/> whose elements are the result of invoking a projection string on each element of source.</returns>
+        /// <example>
+        /// <code>
+        /// class ExampleClass
+        /// {
+        ///     public string StringProperty1 { get; set; }
+        ///     public string StringProperty2 { get; set; }
+        /// }
+        /// class TargetClass
+        /// {
+        ///     public string Value { get; }
+        /// }
+        /// //Select a single field
+        /// var dynamicObject = qry.Select&lt;TargetClass&gt;("TargetClass(StringProperty1)");
+        /// </code>
+        /// </example>
+        /// <remarks>
+        /// The name of <typeparamref name="TResult"/> and type whose constructor is invoked should match.
+        /// </remarks>
+        public static IQueryable<TResult> Select<TResult>(this IQueryable source, string selector, params object[] args)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (selector == null) throw new ArgumentNullException(nameof(selector));
+
+#if NET35
+            if (string.IsNullOrEmpty(selector) || selector.All(c => Char.IsWhiteSpace(c)))
+#else
+            if (string.IsNullOrWhiteSpace(selector))
+#endif
+            {
+                throw new ArgumentException("Expected non-empty string", nameof(selector));
+            }
+
+            IDynamicLinkCustomTypeProvider provider = new TypesDynamicLinqCustomTypeProvider(typeof(TResult));
+            LambdaExpression lambda = DynamicExpression.ParseLambda(provider, source.ElementType, typeof(TResult), selector, args);
+            return source.Provider.CreateQuery<TResult>(
+                Expression.Call(
+                    typeof(Queryable), "Select",
+                    new Type[] { source.ElementType, lambda.Body.Type },
+                    source.Expression, Expression.Quote(lambda)));
+        }
+
+        /// <summary>
         /// Projects each element of a sequence into a new form.
         /// </summary>
         /// <param name="source">A sequence of values to project.</param>

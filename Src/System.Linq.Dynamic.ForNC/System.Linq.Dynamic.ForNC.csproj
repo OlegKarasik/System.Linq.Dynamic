@@ -38,7 +38,6 @@
     <Compile Include="..\System.Linq.Dynamic\Properties\AssemblyInfo.cs" Link="Properties\AssemblyInfo.cs" />
     <Compile Include="..\System.Linq.Dynamic\Properties\GlobalSuppressions.cs" Link="Properties\GlobalSuppressions.cs" />
     <Compile Include="..\System.Linq.Dynamic\Res.cs" Link="Res.cs" />
-    <Compile Include="..\System.Linq.Dynamic\StrongTypeQueryable.cs" Link="StrongTypeQueryable.cs" />
   </ItemGroup>
 
   <ItemGroup>

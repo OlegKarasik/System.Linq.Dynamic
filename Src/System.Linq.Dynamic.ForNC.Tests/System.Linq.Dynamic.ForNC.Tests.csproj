@@ -31,7 +31,6 @@
     <Compile Include="..\System.Linq.Dynamic.Tests\Helpers\SampleModels.cs" Link="Helpers\SampleModels.cs" />
     <Compile Include="..\System.Linq.Dynamic.Tests\InternalTests.cs" Link="InternalTests.cs" />
     <Compile Include="..\System.Linq.Dynamic.Tests\OperatorTests.cs" Link="OperatorTests.cs" />
-    <Compile Include="..\System.Linq.Dynamic.Tests\StrongTypeTests.cs" Link="StrongTypeTests.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -109,7 +109,23 @@ namespace System.Linq.Dynamic.Tests
             Helper.ExpectException<ArgumentNullException>(() => qry.OrderBy(null));
             Helper.ExpectException<ArgumentException>(() => qry.OrderBy(""));
             Helper.ExpectException<ArgumentException>(() => qry.OrderBy(" "));
-        }    
+        }
+
+        [TestMethod]
+        public void Select_WithKnownResultProjection()
+        {
+            //Arrange
+            var testList = User.GenerateSampleModels(100);
+            var qry = testList.AsQueryable();
+
+            //Act
+            var userInfoes = qry.Select<UserInfo>("UserInfo(UserName)");
+
+            //Assert
+            CollectionAssert.AreEqual(
+                testList.Select(u => new UserInfo(u.UserName)).ToArray(),
+                userInfoes.ToArray());
+        }
 
         [TestMethod]
         public void Select()
