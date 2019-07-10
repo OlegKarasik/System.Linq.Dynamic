@@ -113,8 +113,7 @@
             <h4>IQueryable Extension Methods</h4>
             <div class="row">
                 <div class="col-md-9">
-                    @Html.FormatMarkdown("The [System.Linq.Dynamic.DynamicQueryable][0] class implements the following extension methods for dynamically querying objects that implement the `IQueryable<T>` interface.\n[0]:/Library/DynamicQueryable")
-                    @Html.FormatMarkdown("The methods found in `DynamicQueryable` correspond to their System.Linq.Queryable counterparts, except that they operate on `IQueryable` instead of `IQueryable<T>` and use string expressions instead of lambda expressions to express predicates, selectors, and orderings. `IQueryable` is the non-generic base interface for `IQueryable<T>`, so the methods can be used even when `T` isn’t known on beforehand, i.e. when the source of a query is dynamically determined.")
+                    @Html.FormatMarkdown("The methods found in [BasicQueryable][0] and [DynamicQueryable][1] correspond to their System.Linq.Queryable counterparts, except that they operate on `IQueryable` instead of `IQueryable<T>` (see note) and use string expressions instead of lambda expressions to express predicates, selectors, and orderings. `IQueryable` is the non-generic base interface for `IQueryable<T>`, so the methods can be used even when `T` isn’t known on beforehand, i.e. when the source of a query is dynamically determined.\n[0]:/Library/BasicQueryable\n[1]:/Library/DynamicQueryable")
                     @Html.FormatMarkdown("The *predicate*, *selector*, *ordering*, *keySelector*, and *elementSelector* parameters are strings containing expressions written in the [expression language][0]. In the expression strings, the members of the [current instance][1] are automatically in scope and the instance itself can be referenced using the keyword `it` or symbol `$`.\n[0]:#expressionLanguage\n[1]:#currentInstance")
                     @Html.FormatMarkdown("The [`OrderBy`][0] method permits a sequence of orderings to be specified, separated by commas. Each ordering may optionally be followed by `asc` or `ascending` to indicate ascending order, or `desc` or `descending` to indicate descending order. The default order is ascending. The example\n[0]:/Library/DynamicQueryable/OrderBy(TSource)")
                     @Html.FormatCodeBlock("products.OrderBy(\"Category.CategoryName, UnitPrice descending\");")
@@ -122,7 +121,7 @@
                 </div>
                 <div class="col-md-3">
                     @Html.OpenNote()
-                    @Html.FormatMarkdown("Because a dynamic predicate or ordering does not affect the result type, generic overloads are provided for `Where` and `OrderBy` in order to preserve strong typing when possible.")
+                    @Html.FormatMarkdown("There are also generic overloads for `Where`, `OrderBy` because a dynamic predicate or ordering does not affect the result type. Generic overload for `Select` allows to project dynamic type into known type.")
                     @Html.CloseNote()
                 </div>
             </div>
