@@ -13,6 +13,15 @@
       </Methods>
     </Class>
 
+    <Class name="TypesDynamicLinqCustomTypeProvider" namespace="System.Linq.Dynamic">
+      <Description>The types <see cref="IDynamicLinkCustomTypeProvider"/>.</Description>
+      <Methods>
+        <Method name="GetCustomTypes" returnType="HashSet&lt;Type&gt;">
+          <Description>Returns a list of custom types that Dynamic Linq will understand.</Description>
+        </Method>
+      </Methods>
+    </Class>
+
   </Classes>
 
 </DynLINQDoc>
