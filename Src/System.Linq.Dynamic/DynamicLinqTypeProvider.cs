@@ -39,7 +39,7 @@ namespace System.Linq.Dynamic
     }
 
     /// <summary>
-    /// The types <see cref="IDynamicLinkCustomTypeProvider"/>.
+    /// The free types implementation of <see cref="IDynamicLinkCustomTypeProvider"/>.
     /// </summary>
     public class TypesDynamicLinqCustomTypeProvider : IDynamicLinkCustomTypeProvider
     {
