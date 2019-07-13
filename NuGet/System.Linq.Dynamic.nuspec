@@ -17,7 +17,10 @@
     </description>
     <summary>Supports .NET Framework 3.5, 4.0+, Silverlight 5, .NET Core 2.0+</summary>
     <releaseNotes>
+      Added new strongly typed Select&lt;T&gt; method overload.
+      
       Added binaries targeting .NET Core 2.0.
+      
       Removed dependency on FluentAssertionNA package.
     </releaseNotes>
     <tags>dynamic linq c# entities</tags>
