@@ -135,7 +135,8 @@
                   public string Value { get; }
                 }
 
-                //Select a single field
+                // Select single field into new TargetClass
+                // important to remember -> the only Type(argument) query is supported
                 var dynamicObject = qry.Select&lt;TargetClass&gt;("TargetClass(StringProperty1)");
               </ExampleCode>
             </Example>
