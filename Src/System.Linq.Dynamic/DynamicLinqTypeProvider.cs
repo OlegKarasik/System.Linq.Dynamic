@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 
 namespace System.Linq.Dynamic
 {
@@ -23,7 +24,18 @@ namespace System.Linq.Dynamic
 #if !NET35
                 .Where(x => !x.IsDynamic)
 #endif
-                .SelectMany(x => x.GetTypes())
+                .SelectMany(x =>
+                {
+                    try
+                    {
+                        return x.GetTypes();
+                    }
+                    catch (ReflectionTypeLoadException)
+                    {
+                        //Some referenced assemblies may throw a ReflectionTypeLoadException. In this case, just eat the exception.
+                        return new Type[0];
+                    }
+                })
                 .Where(x => x.GetCustomAttributes(typeof(DynamicLinqTypeAttribute), false).Any());
         }
 
