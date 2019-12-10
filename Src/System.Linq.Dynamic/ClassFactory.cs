@@ -93,6 +93,28 @@ namespace System.Linq.Dynamic
 #endif
         }
 
+        private static void GenerateConstructor(TypeBuilder tb, FieldInfo[] fields)
+        {
+            ConstructorInfo objCtor = typeof(object).GetConstructor(Type.EmptyTypes);
+            ConstructorBuilder cb = tb.DefineConstructor(
+                MethodAttributes.Public, 
+                CallingConventions.Standard,
+                fields.Select(x => x.FieldType).ToArray());
+
+            ILGenerator gen = cb.GetILGenerator();
+            gen.Emit(OpCodes.Ldarg_0);
+            gen.Emit(OpCodes.Call, objCtor);
+            for (int i = 0; i < fields.Length; i++)
+            {
+                var f = fields[i];
+
+                gen.Emit(OpCodes.Ldarg_0);
+                gen.Emit(OpCodes.Ldarg, i + 1);
+                gen.Emit(OpCodes.Stfld, f);
+            }
+            gen.Emit(OpCodes.Ret);
+        }
+
         private static FieldInfo[] GenerateProperties(TypeBuilder tb, DynamicProperty[] properties)
         {
             FieldInfo[] fields = new FieldBuilder[properties.Length];
@@ -177,30 +199,6 @@ namespace System.Linq.Dynamic
                 gen.Emit(OpCodes.Ldfld, field);
                 gen.EmitCall(OpCodes.Callvirt, ct.GetMethod("GetHashCode", new Type[] { ft }), null);
                 gen.Emit(OpCodes.Xor);
-            }
-            gen.Emit(OpCodes.Ret);
-        }
-
-        void GenerateConstructor(TypeBuilder tb, FieldInfo[] fields)
-        {
-            Type objType = Type.GetType("System.Object");
-            ConstructorInfo objCtor = objType.GetConstructor(new Type[0]);
-
-            ConstructorBuilder cb = tb.DefineConstructor(MethodAttributes.Public, CallingConventions.Standard,
-                fields.Select(x => x.FieldType).ToArray());
-            ILGenerator gen = cb.GetILGenerator();
-
-            gen.Emit(OpCodes.Ldarg_0);
-
-            gen.Emit(OpCodes.Call, objCtor);
-
-            for (int i = 0; i < fields.Length; i++)
-            {
-                var field = fields[i];
-
-                gen.Emit(OpCodes.Ldarg_0);
-                gen.Emit(OpCodes.Ldarg, i + 1);
-                gen.Emit(OpCodes.Stfld, field);
             }
             gen.Emit(OpCodes.Ret);
         }
