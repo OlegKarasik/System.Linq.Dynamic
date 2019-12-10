@@ -1040,12 +1040,16 @@ namespace System.Linq.Dynamic
             ValidateToken(TokenId.CloseParen, Res.CloseParenOrCommaExpected);
             NextToken();
             Type type = ClassFactory.Instance.GetDynamicClass(properties);
+            PropertyInfo[] members = new PropertyInfo[properties.Count];
+            Type[] ctorArgTypes = new Type[properties.Count];
+            for (int i = 0; i < properties.Count; ++i)
+            {
+                DynamicProperty dp = properties[i];
 
-            var constructor = type.GetConstructor(properties.Select(x => x.Type).ToArray());
-            var members = properties.Select(x => type.GetProperty(x.Name)).ToArray();
-            var newExpr = Expression.New(constructor, expressions, members);
-
-            return newExpr;
+                members[i] = type.GetProperty(dp.Name);
+                ctorArgTypes[i] = dp.Type;
+            }
+            return Expression.New(type.GetConstructor(ctorArgTypes), expressions, members);
         }
 
         Expression ParseLambdaInvocation(LambdaExpression lambda)
