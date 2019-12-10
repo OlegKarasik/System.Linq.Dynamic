@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
+using System.Reflection.Emit;
 
 namespace System.Linq.Dynamic
 {
@@ -11,7 +12,7 @@ namespace System.Linq.Dynamic
     public sealed class DynamicLinqTypeAttribute : Attribute { }
 
     /// <summary>
-    /// The default <see cref="IDynamicLinkCustomTypeProvider"/>. Scans the current <see cref="AppDomain"/> for all types marked with 
+    /// The default <see cref="IDynamicLinkCustomTypeProvider"/>. Scans the current <see cref="AppDomain"/> for all exported types marked with 
     /// <see cref="DynamicLinqTypeAttribute"/>, and adds them as custom Dynamic Link types.
     /// </summary>
     public class DefaultDynamicLinqCustomTypeProvider : IDynamicLinkCustomTypeProvider
@@ -23,6 +24,11 @@ namespace System.Linq.Dynamic
             return AppDomain.CurrentDomain.GetAssemblies()
 #if !NET35
                 .Where(x => !x.IsDynamic)
+#else
+                // Prior to .NET Framework 4.0 there were no "IsDynamic" property.
+                // Thanks to reflection we know that for dynamic assemblies generated via reflection emit
+                // "ManifestModule.ScopeName" is set to "RefEmit_InMemoryManifestModule"
+                .Where(x => x.ManifestModule.ScopeName != "RefEmit_InMemoryManifestModule")
 #endif
                 .SelectMany(x =>
                 {
@@ -32,8 +38,8 @@ namespace System.Linq.Dynamic
                     }
                     catch (ReflectionTypeLoadException)
                     {
-                        //Some referenced assemblies may throw a ReflectionTypeLoadException. In this case, just eat the exception.
-                        return new Type[0];
+                        // Some referenced assemblies may throw a ReflectionTypeLoadException. In this case, just eat the exception.
+                        return Type.EmptyTypes;
                     }
                 })
                 .Where(x => x.GetCustomAttributes(typeof(DynamicLinqTypeAttribute), false).Any());
